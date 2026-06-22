@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOHN.BOOKS</title>
+<style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      padding: 20px;
+    }
+
+    header {
+      background-color: #4da6ff;
+      padding: 16px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .book-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .book {
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 250px;
+      box-shadow: 0 0 10px rgba(77,166,255,0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+      color: #333;
+    }
+
+    .book:hover {
+      transform: scale(1.05);
+    }
+
+    .book img {
+      width: 100%;
+      display: block;
+    }
+
+    .book-title {
+      padding: 12px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .book-title { font-size: 16px; }
+    }
+</style>
+</head>
+<body>
+
+<header>JOHN.BOOKS</header>
+
+<div class="book-list">
+  <div class="book" onclick="location.href='eps1.html'">
+    <img src="SBC1.png" alt="表紙1">
+    <div class="book-title">サンプル1</div>
+  </div>
+
+  <div class="book" onclick="location.href='eps2.html'">
+    <img src="SBC2.png" alt="表紙2">
+    <div class="book-title">サンプル2</div>
+  </div>
+</div>
+
+</body>
+</html>

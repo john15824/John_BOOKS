@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>僕のサンプル - JOHN.BOOKS</title>
+
+ <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #333333;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    a {
+      color: #333333;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ヘッダー */
+    header {
+      background-color: #4da6ff;
+      color: #fff;
+      font-weight: bold;
+      font-size: 24px;
+      padding: 12px 20px;
+      width: 100vw;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    #menuBtn {
+      cursor: pointer;
+      font-size: 26px;
+      user-select: none;
+      color: #fff;
+      margin: 0;
+    }
+
+    .logo {
+      user-select: none;
+      font-size: 28px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+	  color: #ffffff;
+    }
+
+    #searchToggle {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #searchForm {
+      position: absolute;
+      top: 56px;
+      right: 20px;
+      background: #4da6ff;
+      padding: 8px;
+      border-radius: 6px;
+      display: none;
+      z-index: 101;
+    }
+
+    #searchInput {
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      outline: none;
+      background-color: #ffffff;
+      color: #333333;
+      width: 180px;
+    }
+
+    /* 作品一覧メニュー */
+    #menu {
+      position: absolute;
+      top: 56px;
+      left: 10px;
+      background: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: none;
+      color: #333333;
+      max-width: 260px;
+      box-shadow: 0 0 15px rgba(77,166,255,0.7);
+      z-index: 101;
+      word-break: break-word;
+    }
+
+    #menu a {
+      display: block;
+      padding: 8px 0;
+      border-bottom: 1px solid #dddddd;
+      word-break: break-word;
+      color: #333333;
+    }
+
+    #menu a:last-child {
+      border-bottom: none;
+    }
+
+    #menu a:hover {
+      background-color: #4da6ff;
+      color: #ffffff;
+    }
+
+    /* コンテンツ */
+    .info {
+      margin: 20px auto 40px;
+      max-width: 700px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .info h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .info .author {
+      font-size: 16px;
+      color: #666666;
+    }
+
+    #comic {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      padding: 0 10px;
+      width: 100%;
+    }
+
+    .comic-img {
+      max-width: 100%;
+      width: 350px;
+      height: auto;
+      margin: 24px auto;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .comic-img {
+        width: 90%;
+      }
+    }
+
+    /* コメント欄 */
+    #comment-section {
+      max-width: 700px;
+      margin: 40px auto 80px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      color: #333333;
+      box-shadow: 0 0 10px rgba(77,166,255,0.7);
+    }
+
+    #comment-section h2 {
+      margin-bottom: 16px;
+    }
+
+    #nickname,
+    #commentContent {
+      width: 100%;
+      background: #ffffff;
+      color: #333333;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    #commentContent {
+      min-height: 80px;
+    }
+
+    #submitCommentBtn {
+      margin-top: 12px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4da6ff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #submitCommentBtn:hover {
+      background-color: #3b82f6;
+    }
+
+    #comments {
+      margin-top: 32px;
+      text-align: left;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .comment {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #dddddd;
+      word-break: break-word;
+    }
+
+    .comment strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .comment .timestamp {
+      font-size: 12px;
+      color: #666666;
+    }
+
+    .deleteBtn {
+      font-size: 16px;
+      padding: 0;
+      margin-left: 8px;
+      background: none;
+      border: none;
+      color: #4da6ff;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .deleteBtn:hover {
+      color: #3b82f6;
+    }
+
+    /* 🟥 右下広告 */
+    #adBanner {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      display: none;
+      z-index: 9999;
+      animation: slideInRight 1.5s ease forwards;
+    }
+
+    #adBanner img {
+      width: 300px;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    #adBanner #closeAd {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* 🟦 下部広告 */
+    #adFullBanner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      display: none;
+      z-index: 9998;
+      animation: slideInDown 2.5s ease forwards;
+      cursor: pointer;
+    }
+
+    #adFullBanner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    @keyframes slideInRight {
+      0% { opacity: 0; transform: translateX(100%); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    #comic img {
+      max-width: 100%;
+      width: 350px;
+      height: auto;
+      margin: 24px auto;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      #comic img {
+        width: 90%;
+      }
+    }
+</style>
+</head>
+<body>
+
+<header>
+  <div id="menuBtn" title="作品一覧">&#9776;</div>
+  <a href="index.html" class="logo">JOHN.BOOKS</a>
+  <div id="searchToggle" title="検索" style="cursor:pointer; width:24px; height:24px; display:flex; align-items:center; justify-content:center;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10" cy="10" r="7"></circle>
+      <line x1="15" y1="15" x2="22" y2="22"></line>
+    </svg>
+  </div>
+  <form id="searchForm" onsubmit="event.preventDefault(); searchComic();">
+    <input type="text" id="searchInput" placeholder="作品検索" autocomplete="off" />
+  </form>
+</header>
+
+<!-- 作品一覧メニュー -->
+<div id="menu">
+  <a href="index.html">サンプル.1</a>
+  <a href="eps2.html">サンプル.2</a>
+</div>
+
+<div class="info">
+  <h1>サンプル.2</h1>
+  <div class="author">作者 ジョン</div>
+</div>
+
+
+<div id="comic">
+  <img class="comic-img" src="SBC2.png" alt="Page 0">
+  <img class="comic-img" src="SBC22.png" alt="Page 1">
+  <img src="サンプル2-01.png" alt="Page 2" />
+  <img src="サンプル2-02.png" alt="Page 3" />
+  <img src="サンプル2-03.png" alt="Page 4" />
+  <img src="サンプル2-04.png" alt="Page 5" />
+  <img src="サンプル2-05.png" alt="Page 6" />
+  <img src="サンプル2-06.png" alt="Page 7" />
+  <img src="サンプル2-07.png" alt="Page 8" />
+  <img src="サンプル2-08.png" alt="Page 9" />
+  <img src="サンプル2-09.png" alt="Page 10" />
+  <img src="サンプル2-10.png" alt="Page 11" />
+  <img src="サンプル2-11.png" alt="Page 12" />
+  <img src="サンプル2-12.png" alt="Page 13" />
+  <img src="サンプル2-13.png" alt="Page 14" />
+  <img src="サンプル2-14.png" alt="Page 15" />
+  <img src="サンプル2-15.png" alt="Page 16" />
+  <img src="サンプル2-16.png" alt="Page 17" />
+  <img src="サンプル2-17.png" alt="Page 18" />
+  <img src="サンプル2-18.png" alt="Page 19" />
+  <img src="サンプル2-19.png" alt="Page 20" />
+  <img src="サンプル2-20.png" alt="Page 21" />
+  <img src="サンプル2-21.png" alt="Page 22" />
+  <img src="サンプル2-22.png" alt="Page 23" />
+  <img src="サンプル2-23.png" alt="Page 24" />
+  <img src="サンプル2-24.png" alt="Page 25" />
+  <img src="サンプル2-25.png" alt="Page 26" />
+  <img src="サンプル2-26.png" alt="Page 27" />
+</div>
+
+<div id="comment-section">
+  <h2>コメントを投稿する</h2>
+  <input id="nickname" type="text" placeholder="ニックネーム" maxlength="30" />
+  <textarea id="commentContent" rows="4" placeholder="コメント内容" maxlength="500"></textarea>
+  <button id="submitCommentBtn" onclick="submitComment()">コメントする</button>
+  <div id="comments"></div>
+</div>
+
+<!-- 右下広告 -->
+<div id="adBanner">
+  <img src="SAD.png" alt="広告" onclick="location.href='buy.html'">
+<button id="closeAd" onclick="event.stopPropagation(); hideAd();">close ad ×</button>
+
+</div>
+
+<!--下部バナー広告 -->
+<div id="adFullBanner" onclick="location.href='buy.html'">
+  <img id="adFullImage" src="SAD2.png" alt="広告バナー" />
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-database-compat.js"></script>
+
+<script>
+  if (!localStorage.getItem("userId")) {
+    localStorage.setItem("userId", crypto.randomUUID());
+  }
+  const userId = localStorage.getItem("userId");
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC9rrmSghNLmtSVwNBrYYbM_hqlrskWqiI",
+  authDomain: "johnbooks-937d9.firebaseapp.com",
+  databaseURL: "https://johnbooks-937d9-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "johnbooks-937d9",
+  storageBucket: "johnbooks-937d9.firebasestorage.app",
+  messagingSenderId: "916351830023",
+  appId: "1:916351830023:web:12148a449708602fec82a2"
+};
+
+firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  // eps2.html 用
+const commentsRef = db.ref("comments_eps2");
+
+
+  const menuBtn = document.getElementById("menuBtn");
+  const menu = document.getElementById("menu");
+  menuBtn.addEventListener("click", () => {
+    menu.style.display = (menu.style.display === "block") ? "none" : "block";
+  });
+
+  document.getElementById("searchToggle").addEventListener("click", () => {
+    const form = document.getElementById("searchForm");
+    form.style.display = (form.style.display === "block") ? "none" : "block";
+  });
+
+  const works = [
+    { name: "僕のサンプル", url: "index.html" },
+    { name: "別の作品名", url: "another.html" },
+  ];
+
+  function searchComic() {
+    const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+    if (!keyword) {
+      alert("検索キーワードを入力してください");
+      return;
+    }
+    const found = works.find(w => w.name.toLowerCase().includes(keyword));
+    if (found) {
+      window.location.href = found.url;
+    } else {
+      alert("該当する作品が見つかりません");
+    }
+  }
+
+  function submitComment() {
+    const nicknameInput = document.getElementById("nickname");
+    const contentInput = document.getElementById("commentContent");
+    let nickname = nicknameInput.value.trim() || "名無し";
+    let content = contentInput.value.trim();
+    if (!content) {
+      alert("コメント内容を入力してください");
+      return;
+    }
+
+    const now = new Date();
+    const timestamp = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+
+    commentsRef.push({ nickname, content, timestamp })
+      .then(() => console.log("コメント送信成功"))
+      .catch((error) => console.error("コメント送信エラー:", error));
+
+    nicknameInput.value = "";
+    contentInput.value = "";
+  }
+
+  const commentsDiv = document.getElementById("comments");
+  function refreshComments() {
+    commentsDiv.innerHTML = "";
+    let count = 1;
+    commentsRef.once("value", (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const comment = childSnapshot.val();
+        const div = document.createElement("div");
+        div.className = "comment";
+        div.innerHTML = `
+          <strong>${count}. ${escapeHtml(comment.nickname)}</strong>
+          <span class="timestamp">${escapeHtml(comment.timestamp)}</span>
+          <button class="deleteBtn" data-key="${childSnapshot.key}" title="コメントを削除する" style="float:right;">🗑️</button>
+          <br>${escapeHtml(comment.content).replace(/\n/g, "<br>")}
+        `;
+        commentsDiv.appendChild(div);
+        count++;
+      });
+      commentsDiv.scrollTop = commentsDiv.scrollHeight;
+      attachDeleteHandlers();
+    });
+  }
+
+  function attachDeleteHandlers() {
+    document.querySelectorAll(".deleteBtn").forEach(btn => {
+      btn.onclick = () => {
+        const key = btn.getAttribute("data-key");
+        if (confirm("このコメントを削除しますか？")) {
+          commentsRef.child(key).remove()
+            .then(() => console.log("コメント削除成功"))
+            .catch(err => console.error("コメント削除エラー:", err));
+        }
+      };
+    });
+  }
+
+  commentsRef.on("value", refreshComments);
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, (m) => {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[m] || m;
+    });
+  }
+
+  // 🟥 右下広告
+  function showAd() {
+    document.getElementById("adBanner").style.display = "block";
+  }
+  function hideAd() {
+    document.getElementById("adBanner").style.display = "none";
+    setTimeout(showAd, 10000);
+  }
+  setTimeout(showAd, 10000);
+
+  // 🟦 下部広告
+  function showFullAd() {
+    const ad = document.getElementById("adFullBanner");
+    const img = document.getElementById("adFullImage");
+    const sequence = ["SAD3.png", "SAD2.png"];
+    let step = 0;
+    ad.style.display = "block";
+    ad.style.animation = "slideInDown 1s ease forwards";
+    img.src = sequence[step];
+    const interval = setInterval(() => {
+      step++;
+      if (step < sequence.length) {
+        img.src = sequence[step];
+      } else {
+        clearInterval(interval);
+        ad.style.display = "none";
+      }
+    }, 1700);
+  }
+  setInterval(showFullAd, 10000);
+
+</script>
+</body>
+</html>
