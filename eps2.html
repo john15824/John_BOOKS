@@ -366,6 +366,7 @@
 <div class="info">
   <h1>サンプル.2</h1>
   <div class="author">作者 ジョン</div>
+  <div id="viewCount">閲覧数：0</div>
 </div>
 
 
@@ -444,6 +445,16 @@ firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   // eps2.html 用
 const commentsRef = db.ref("comments_eps2");
+const viewsRef = db.ref("views/sample2");
+
+viewsRef.transaction((currentViews) => {
+  return (currentViews || 0) + 1;
+});
+
+viewsRef.on("value", (snapshot) => {
+  document.getElementById("viewCount").textContent =
+    `閲覧数：${snapshot.val() || 0}`;
+});
 
 
   const menuBtn = document.getElementById("menuBtn");

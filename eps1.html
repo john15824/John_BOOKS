@@ -317,6 +317,7 @@
 <div class="info">
   <h1>サンプル</h1>
   <div class="author">作者 ジョン</div>
+  <div id="viewCount">閲覧数：0</div>
 </div>
 
 <div id="comic">
@@ -387,6 +388,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   const commentsRef = db.ref("comments");
+  const viewsRef = db.ref("views/sample1");
+
+viewsRef.transaction((currentViews) => {
+  return (currentViews || 0) + 1;
+});
+
+viewsRef.on("value", (snapshot) => {
+  document.getElementById("viewCount").textContent =
+    `閲覧数：${snapshot.val() || 0}`;
+});
 
   const menuBtn = document.getElementById("menuBtn");
   const menu = document.getElementById("menu");
